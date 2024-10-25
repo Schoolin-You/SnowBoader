@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class CrashDetector : MonoBehaviour
+{
+    [SerializeField] float loadDelay = 0.2f;
+    [SerializeField] ParticleSystem crashEffect;
+    [SerializeField] AudioClip crashSFX;
+
+    // Update is called once per frame
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Ground")
+        {
+
+            FindObjectOfType<PlayerController>().DisableControls();
+
+            // this will be in the console if you crash into the ground
+            Debug.Log("You have Crashed. OH NO!");
+            
+            // will play particles when you crash
+            crashEffect.Play();
+
+            // The crash effect audio will play when you het the ground
+            GetComponent<AudioSource>().PlayOneShot(crashSFX);
+
+            // Has a delay to show the particles given
+            Invoke("ReloadScene", loadDelay);
+
+           
+        }
+    }
+
+    // This is to reset the level when you crash
+    void ReloadScene()
+    {
+        SceneManager.LoadScene(0);
+    }
+}
