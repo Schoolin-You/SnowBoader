@@ -1,0 +1,40 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class FinishLine : MonoBehaviour
+{
+    // the dealy to restart the level
+    [SerializeField] float loadDelay = 2f;
+
+    // This is connected to the finish line effect
+    [SerializeField] ParticleSystem finishEffect;
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.tag == "Player")
+        {
+            // This Debug will show up when you cross the finish line
+            Debug.Log("You have crossed the finish line WAY TO GOO!!");
+
+            // Will use the particle effect whenyou cross the finish line
+            finishEffect.Play();
+
+            // Will play the finish line audio when you cross the finish line
+            GetComponent<AudioSource>().Play();
+            
+            // This is to make the game wait before loading the level again
+            Invoke("ReloadScene", loadDelay);
+
+
+            
+        }
+    }
+
+    // This is connected to the invoke line in the if statement
+    void ReloadScene()
+    {
+        SceneManager.LoadScene(0);
+    }
+}
