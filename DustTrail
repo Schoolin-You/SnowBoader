@@ -9,3 +9,8 @@ public class DustTrail : MonoBehaviour
       {
           dustParticles.Play();
       }
+  void OnCollisionExit2D(Collsion2D collision)
+  {
+      dustParticles.Stop();
+  }
+}  
