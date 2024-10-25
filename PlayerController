@@ -1,0 +1,70 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    //place holder for how fast you turn forward or backward
+    [SerializeField] float torqueAmount = 1f;
+
+    // These are the speeds that will be on the player when and when you arent pushing the up arrow
+    [SerializeField] float boostSpeed = 30f;
+    [SerializeField] float baseSpeed = 20f;
+
+    bool canMove = true;
+    
+    // This is the vriable to use the Rigidbody
+    Rigidbody2D rb2d;
+
+    SurfaceEffector2D surfaceEffector2D;
+
+    // Start is called before the first frame update to get the compenent for Rigidbody
+    void Start()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+        surfaceEffector2D = FindObjectOfType<SurfaceEffector2D>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(canMove)
+        {
+        RotatePlayer();
+        RespondToBoost();
+        }
+    }
+
+    // When you crash you won't be able to move
+    public void DisableControls()
+    {
+        canMove = false;
+    }
+
+    // When you press the forward arrow key you will get a boost of speed
+    void RespondToBoost()
+    {
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            surfaceEffector2D.speed = boostSpeed;
+        }
+        else
+        {
+            surfaceEffector2D.speed = baseSpeed;
+        }
+    }
+
+    void RotatePlayer()
+    {
+        // When you press the left arrow you'll spin backward
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            rb2d.AddTorque(torqueAmount);
+        }
+        // When you press the right arrow you'll spin forward
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            rb2d.AddTorque(-torqueAmount);
+        }
+    }
+}
